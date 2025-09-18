@@ -1,0 +1,8 @@
+id,title,description,status
+1,Water Leakage,Pipe burst near hostel,Pending
+2,Electricity Issue,Power cut in Block A,Resolved
+3,WiFi Not Working,No internet in library,Pending
+
+4,Water Leakage,Pipe burst near hostel,John Doe,john@example.com,1234567890,Block A,Open,2025-09-18
+5,SMX-5-4FMR,Water Supply,Water leakage,Navita Tulsani,navitatulsani0@gmail.com,7665863120,Jaipur,Open,2025-09-18
+6,SMX-6-1X41,Drainage & Sewerage,smelly holes,Navita Tulsani,navitatulsani0@gmail.com,7665863120,"26.8828672,75.7956608",Open,2025-09-18
