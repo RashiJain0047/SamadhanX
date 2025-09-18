@@ -30,9 +30,9 @@ const TrackComplaint = () => {
     priority: "Medium",
     submittedDate: "2024-01-15",
     expectedResolution: "2024-01-22",
-    assignedOfficer: "Rashi Jain",
-    officerContact: "+91 98765 40000",
-    location: "Main Road, Sector 15, Jagatpura",
+    assignedOfficer: "Rajesh Kumar",
+    officerContact: "+91 98765 43210",
+    location: "Main Road, Sector 15, Near City Mall",
     description: "The street light pole is damaged and not working since last week, causing safety concerns for pedestrians and vehicles during night hours.",
     timeline: [
       {

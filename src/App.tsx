@@ -7,6 +7,13 @@ import Landing from "./pages/Landing";
 import SubmitComplaint from "./pages/SubmitComplaint";
 import TrackComplaint from "./pages/TrackComplaint";
 import About from "./pages/About";
+import Login from "./pages/Login";
+import AdminLayout from "./components/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import ComplaintManagement from "./pages/admin/ComplaintManagement";
+import Analytics from "./pages/admin/Analytics";
+import UserManagement from "./pages/admin/UserManagement";
+import Notifications from "./pages/admin/Notifications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +29,17 @@ const App = () => (
           <Route path="/submit" element={<SubmitComplaint />} />
           <Route path="/track" element={<TrackComplaint />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="complaints" element={<ComplaintManagement />} />
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="users" element={<UserManagement />} />
+            <Route path="notifications" element={<Notifications />} />
+          </Route>
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

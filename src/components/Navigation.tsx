@@ -48,9 +48,11 @@ const Navigation = () => {
                 </Link>
               );
             })}
-            <Button variant="civic" size="sm">
-              Get Started
-            </Button>
+            <Link to="/login">
+              <Button variant="civic" size="sm">
+                Login
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -90,9 +92,11 @@ const Navigation = () => {
               );
             })}
             <div className="px-3 py-2">
-              <Button variant="civic" size="sm" className="w-full">
-                Get Started
-              </Button>
+              <Link to="/login">
+                <Button variant="civic" size="sm" className="w-full">
+                  Login
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
