@@ -12,6 +12,7 @@ import {
   Award,
   Lightbulb
 } from "lucide-react";
+import Footer from "@/components/Footer"; // Import the new Footer component
 
 const About = () => {
   const objectives = [
@@ -210,6 +211,7 @@ const About = () => {
           </CardContent>
         </Card>
       </div>
+      <Footer /> {/* Add the Footer component here */}
     </div>
   );
 };

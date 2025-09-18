@@ -51,24 +51,24 @@ const FeaturesSection = () => {
       description: "Comprehensive analytics for citizens and officials with performance metrics and trend analysis.",
       gradient: "from-urgent-orange to-civic-blue",
     },
-    {
-      icon: Smartphone,
-      title: "Mobile-First Design",
-      description: "Responsive interface optimized for smartphones with offline capability and progressive web app features.",
-      gradient: "from-civic-blue-dark to-civic-blue",
-    },
-    {
-      icon: Eye,
-      title: "Complete Transparency",
-      description: "Full visibility into complaint lifecycle, officer assignments, and resolution timelines for accountability.",
-      gradient: "from-growth-green/80 to-growth-green",
-    },
-    {
-      icon: Zap,
-      title: "Automated Workflows",
-      description: "Smart routing based on complaint type, automatic escalation, and SLA monitoring for timely resolution.",
-      gradient: "from-urgent-orange/80 to-urgent-orange",
-    },
+    // {
+    //   icon: Smartphone,
+    //   title: "Mobile-First Design",
+    //   description: "Responsive interface optimized for smartphones with offline capability and progressive web app features.",
+    //   gradient: "from-civic-blue-dark to-civic-blue",
+    // },
+    // {
+    //   icon: Eye,
+    //   title: "Complete Transparency",
+    //   description: "Full visibility into complaint lifecycle, officer assignments, and resolution timelines for accountability.",
+    //   gradient: "from-growth-green/80 to-growth-green",
+    // },
+    // {
+    //   icon: Zap,
+    //   title: "Automated Workflows",
+    //   description: "Smart routing based on complaint type, automatic escalation, and SLA monitoring for timely resolution.",
+    //   gradient: "from-urgent-orange/80 to-urgent-orange",
+    // },
   ];
 
   return (
@@ -108,7 +108,7 @@ const FeaturesSection = () => {
         </div>
 
         {/* Future Scope Section */}
-        <div className="bg-gradient-card border border-border rounded-2xl p-8 shadow-hero">
+        {/* <div className="bg-gradient-card border border-border rounded-2xl p-8 shadow-hero">
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold text-foreground mb-4">
               Future Enhancements
@@ -143,7 +143,7 @@ const FeaturesSection = () => {
               <p className="text-sm text-muted-foreground">Department rankings and citizen satisfaction metrics</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
