@@ -1,24 +1,57 @@
+# from fastapi import APIRouter
+# from pydantic import BaseModel
+# from app.database import db
+# import random, string, datetime
+
+# router = APIRouter()
+
+# # Pydantic model
+# class Complaint(BaseModel):
+#     title: str
+#     description: str
+#     name: str = ""
+#     email: str = ""
+#     phone: str = ""
+#     location: str = ""
+#     latitude: float | None = None
+#     longitude: float | None = None
+
+# # Function to generate tracking ID
+# def generate_tracking_id():
+#     rand = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+#     return f"SMX-{rand}"
+
+# # POST → Submit Complaint
+# @router.post("/")
+# def create_complaint(complaint: Complaint):
+#     complaint_dict = complaint.dict()
+#     complaint_dict["tracking_id"] = generate_tracking_id()
+#     complaint_dict["status"] = "Open"
+#     complaint_dict["created_at"] = datetime.datetime.utcnow()
+
+#     db.complaints.insert_one(complaint_dict)
+#     return {"message": "Complaint submitted", "complaint": complaint_dict}
+
+# # GET → Fetch All Complaints
+# @router.get("/")
+# def get_complaints():
+#     complaints = list(db.complaints.find({}, {"_id": 0}))  # hide _id
+#     return {"complaints": complaints}
+
+# # GET → Fetch Complaint by Tracking ID
+# @router.get("/{tracking_id}")
+# def get_complaint_by_id(tracking_id: str):
+#     complaint = db.complaints.find_one({"tracking_id": tracking_id}, {"_id": 0})
+#     if not complaint:
+#         return {"message": "Complaint not found"}
+#     return complaint
 from fastapi import APIRouter
 from pydantic import BaseModel
-import csv
-import os
-import random
-import string
+from app.database import db
+import random, string, datetime
+from bson import ObjectId
 
 router = APIRouter()
-
-# CSV file path
-CSV_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "complaints.csv")
-os.makedirs(os.path.dirname(CSV_FILE), exist_ok=True)
-
-# Ensure CSV exists
-if not os.path.exists(CSV_FILE):
-    with open(CSV_FILE, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=[
-            "id", "tracking_id", "title", "description", "name",
-            "email", "phone", "location", "status", "created_at"
-        ])
-        writer.writeheader()
 
 # Pydantic model
 class Complaint(BaseModel):
@@ -28,40 +61,48 @@ class Complaint(BaseModel):
     email: str = ""
     phone: str = ""
     location: str = ""
+    latitude: float | None = None
+    longitude: float | None = None
 
-# Function to generate unique tracking ID
-def generate_tracking_id(complaint_id: int):
-    rand = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
-    return f"SMX-{complaint_id}-{rand}"
 
+# Function to generate tracking ID
+def generate_tracking_id():
+    rand = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    return f"SMX-{rand}"
+
+
+# Helper to serialize MongoDB documents
+def serialize_doc(doc):
+    doc["_id"] = str(doc["_id"])  # Convert ObjectId to string
+    return doc
+
+
+# POST → Submit Complaint
 @router.post("/")
 def create_complaint(complaint: Complaint):
-    # Load existing complaints
-    with open(CSV_FILE, newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        complaints = list(reader)
+    complaint_dict = complaint.dict()
+    complaint_dict["tracking_id"] = generate_tracking_id()
+    complaint_dict["status"] = "Open"
+    complaint_dict["created_at"] = datetime.datetime.utcnow()
 
-    next_id = len(complaints) + 1
-    tracking_id = generate_tracking_id(next_id)
+    result = db.complaints.insert_one(complaint_dict)
 
-    complaint_dict = {
-        "id": str(next_id),
-        "tracking_id": tracking_id,
-        **complaint.dict(),
-        "status": "Open",
-        "created_at": "2025-09-18"
-    }
+    # Fetch the inserted complaint
+    new_complaint = db.complaints.find_one({"_id": result.inserted_id})
+    return {"message": "Complaint submitted", "complaint": serialize_doc(new_complaint)}
 
-    # Append to CSV
-    with open(CSV_FILE, "a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=complaint_dict.keys())
-        writer.writerow(complaint_dict)
 
-    return {"message": "Complaint submitted", "complaint": complaint_dict}
-
+# GET → Fetch All Complaints
 @router.get("/")
 def get_complaints():
-    with open(CSV_FILE, newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        complaints = list(reader)
+    complaints = [serialize_doc(c) for c in db.complaints.find()]
     return {"complaints": complaints}
+
+
+# GET → Fetch Complaint by Tracking ID
+@router.get("/{tracking_id}")
+def get_complaint_by_id(tracking_id: str):
+    complaint = db.complaints.find_one({"tracking_id": tracking_id}, {"_id": 0})
+    if not complaint:
+        return {"message": "Complaint not found"}
+    return complaint
